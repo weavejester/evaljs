@@ -11,7 +11,9 @@
 (defn evaljs
   "Evaluate a string of Javascript in the current context."
   [code]
-  (evaljs* *context* code))
+  (if (string? code)
+    (evaljs* *context* code)
+    (evaljs* *context* (slurp code))))
 
 (defmacro with-context
   "Evaluates the body with the supplied context, making sure to destroy the
