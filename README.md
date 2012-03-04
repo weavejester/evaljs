@@ -6,7 +6,7 @@ Evaljs is a library for evaluating Javascript code in Clojure.
 
 Add the following dependency to your `project.clj` file:
 
-    [evaljs "0.1.1"]
+    [evaljs "0.1.2"]
 
 ## Usage
 
