@@ -1,4 +1,5 @@
 (ns evaljs.test.core
+  (:import java.io.ByteArrayInputStream)
   (:use evaljs.core
         evaljs.rhino
         clojure.test))
@@ -24,3 +25,8 @@
   (with-context (rhino-context {:x {:a 3}})
     (is (= (evaljs "x") {"a" 3}))
     (is (= (evaljs "x.a") 3))))
+
+(deftest eval-from-io
+  (let [stream (ByteArrayInputStream. (.getBytes "1 + 1"))]
+    (with-context (rhino-context)
+      (is (= (evaljs stream) 2)))))
