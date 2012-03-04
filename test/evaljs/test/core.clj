@@ -1,6 +1,8 @@
 (ns evaljs.test.core
-  (:use [evaljs.core])
-  (:use [clojure.test]))
+  (:use evaljs.core
+        evaljs.rhino
+        clojure.test))
 
-(deftest replace-me ;; FIXME: write
-  (is false "No tests have been written."))
+(deftest basic-js
+  (with-context (rhino-context)
+    (is (= (evaljs "1 + 1") 2))))
