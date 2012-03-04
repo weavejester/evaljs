@@ -22,14 +22,14 @@ You can then evaluate a Javascript expression within a blank context:
 
 ```clojure
 (with-context (rhino-context)
-  (prn (evaljs "1 + 1"))
+  (prn (evaljs "1 + 1")))
 ```
 
 Or a context with a map of initial variables:
 
 ```clojure
 (with-context (rhino-context {:x 2})
-  (prn (evaljs "x + 1"))
+  (prn (evaljs "x + 1")))
 ```
 
 The return value of `evaljs` is the last statement executed. Basic
