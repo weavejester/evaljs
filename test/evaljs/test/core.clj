@@ -13,4 +13,10 @@
 (deftest import-vars
   (with-context (rhino-context {:x 1, :s "foo"})
     (is (= (evaljs "x") 1))
-    (is (= (evaljs "s") "foo"))))
+    (is (= (evaljs "s") "foo")))
+  (with-context (rhino-context {:x [1 2]})
+    (is (= (evaljs "x") [1 2]))
+    (is (= (evaljs "x[0]") 1)))
+  (with-context (rhino-context {:x {:a 3}})
+    (is (= (evaljs "x") {"a" 3}))
+    (is (= (evaljs "x.a") 3))))
