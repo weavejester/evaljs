@@ -1,7 +1,7 @@
 (ns evaljs.rhino
   "Functions to create a Javascript context using the Rhino library."
   (:use evaljs.core)
-  (:import [clojure.lang ISeq]
+  (:import [clojure.lang ISeq Keyword]
            [java.util List Map]
            [org.mozilla.javascript
             Context
@@ -13,9 +13,9 @@
 
 (extend-protocol AsClojure
   NativeObject
-  (as-clojure [x] (into {} x))
+  (as-clojure [x] (into {} (for [[k v] x] [k (as-clojure v)])))
   NativeArray
-  (as-clojure [x] (vec x))
+  (as-clojure [x] (vec (map as-clojure x)))
   Object
   (as-clojure [x] x))
 
@@ -24,19 +24,27 @@
 
 (defn- populate-map [m coll]
   (doseq [[k v] coll]
-    (.put m (name k) m (as-javascript v))))
+    (.put m (name k) m v)))
+
+(defn- native-object [coll]
+  (doto (NativeObject.) (populate-map coll)))
+
+(defn- native-array [coll]
+  (NativeArray. (into-array Object coll)))
 
 (extend-protocol AsJavascript
   NativeObject
   (as-javascript [x] x)
   NativeArray
   (as-javascript [x] x)
+  Keyword
+  (as-javascript [x] (name x))
   ISeq
-  (as-javascript [x] (NativeArray. (into-array Object x)))
+  (as-javascript [x] (native-array (map as-javascript x)))
   List
-  (as-javascript [x] (NativeArray. (into-array Object x)))
+  (as-javascript [x] (native-array (map as-javascript x)))
   Map
-  (as-javascript [x] (doto (NativeObject.) (populate-map x)))
+  (as-javascript [x] (native-object (for [[k v] x] [k (as-javascript v)])))
   Object
   (as-javascript [x] x))
 
