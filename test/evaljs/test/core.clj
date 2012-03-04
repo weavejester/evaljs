@@ -3,6 +3,10 @@
         evaljs.rhino
         clojure.test))
 
+(deftest basic-arithmetic
+  (with-context (rhino-context)
+    (is (= (evaljs "1 + 1") 2))))
+
 (deftest basic-types
   (with-context (rhino-context)
     (is (= (evaljs "10") 10))
