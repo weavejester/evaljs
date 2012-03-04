@@ -5,7 +5,7 @@
 
 (deftype RhinoContext [context scope]
   JSContext
-  (evaljs* [_ code vars]
+  (evaljs* [_ code]
     (.evaluateString context scope code "<eval>" 1 nil))
   (destroy [_]
     (Context/exit)))
