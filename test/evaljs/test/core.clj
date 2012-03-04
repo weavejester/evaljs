@@ -9,3 +9,8 @@
     (is (= (evaljs "\"foo\"") "foo"))
     (is (= (evaljs "[1, 2]") [1 2]))
     (is (= (evaljs "x={a:2};x") {"a" 2}))))
+
+(deftest import-vars
+  (with-context (rhino-context {:x 1, :s "foo"})
+    (is (= (evaljs "x") 1))
+    (is (= (evaljs "s") "foo"))))

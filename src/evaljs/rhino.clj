@@ -25,8 +25,12 @@
     (Context/exit)))
 
 (defn rhino-context
-  "Create a JSContext using the Rhino Javascript interpreter."
-  []
-  (let [context (Context/enter)
-        scope   (.initStandardObjects context)]
-    (RhinoContext. context scope)))
+  "Create a JSContext using the Rhino Javascript interpreter. Takes an optional
+  map of variables to import into the environment."
+  ([] (rhino-context {}))
+  ([vars]
+     (let [context (Context/enter)
+           scope   (.initStandardObjects context)]
+       (doseq [[k v] vars]
+         (.put scope (name k) scope v))
+       (RhinoContext. context scope))))
