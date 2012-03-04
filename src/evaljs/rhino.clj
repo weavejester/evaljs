@@ -17,7 +17,9 @@
   NativeArray
   (as-clojure [x] (vec (map as-clojure x)))
   Object
-  (as-clojure [x] x))
+  (as-clojure [x] x)
+  nil
+  (as-clojure [_] nil))
 
 (defprotocol AsJavascript
   (as-javascript [x]))
@@ -46,7 +48,9 @@
   Map
   (as-javascript [x] (native-object (for [[k v] x] [k (as-javascript v)])))
   Object
-  (as-javascript [x] x))
+  (as-javascript [x] x)
+  nil
+  (as-javascript [_] nil))
 
 (deftype RhinoContext [context scope]
   JSContext
